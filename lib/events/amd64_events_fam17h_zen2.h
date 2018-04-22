@@ -864,7 +864,7 @@ static const amd64_entry_t amd64_fam17h_zen2_pe[]={
     .ngrp    = 0,
   },
   { .name   = "DECODER_OVERRIDE_BRANCH_PRED",
-    .desc   = "Numbner of decoder overrides of existing brnach prediction. This is a speculative event.",
+    .desc   = "Number of decoder overrides of existing branch prediction. This is a speculative event.",
     .modmsk  = AMD64_FAM17H_ATTRS,
     .code    = 0x91,
     .flags   = 0,
