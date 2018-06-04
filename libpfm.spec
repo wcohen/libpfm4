@@ -1,6 +1,6 @@
 %{!?with_python: %global with_python 1}
-%define python_sitearch %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")
-%define python_prefix %(python -c "import sys; print sys.prefix")
+%define python_sitearch %(python -c "from distutils.sysconfig import get_python_lib; print (get_python_lib(1))")
+%define python_prefix %(python -c "import sys; print (sys.prefix)")
 
 Name:		libpfm
 Version:	4.6.0
