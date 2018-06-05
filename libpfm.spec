@@ -1,9 +1,15 @@
-%{!?with_python: %global with_python 1}
-%define python_sitearch %(python -c "from distutils.sysconfig import get_python_lib; print (get_python_lib(1))")
-%define python_prefix %(python -c "import sys; print (sys.prefix)")
+%bcond_without python
+%if %{with python}
+%define python_sitearch %(python2 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")
+%define python_prefix %(python2 -c "import sys; print(sys.prefix)")
+%{?filter_setup:
+%filter_provides_in %{python_sitearch}/perfmon/.*\.so$
+%filter_setup
+}
+%endif
 
 Name:		libpfm
-Version:	4.6.0
+Version:	4.9.0
 Release:	1%{?dist}
 
 Summary:	Library to encode performance events for use by perf tool
@@ -12,9 +18,10 @@ Group:		System Environment/Libraries
 License:	MIT
 URL:		http://perfmon2.sourceforge.net/
 Source0:	http://sourceforge.net/projects/perfmon2/files/libpfm4/%{name}-%{version}.tar.gz
-%if %{with_python}
-BuildRequires:	python-devel
-BuildRequires:	python-setuptools
+%if %{with python}
+BuildRequires:	python2
+BuildRequires:	python2-devel
+BuildRequires:	python2-setuptools
 BuildRequires:	swig
 %endif
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -28,19 +35,29 @@ for the perf_events interface available in upstream Linux kernels since v2.6.31.
 %package devel
 Summary:	Development library to encode performance events for perf_events based tools
 Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description devel
 Development library and header files to create performance monitoring
 applications for the perf_events interface.
 
-%if %{with_python}
-%package python
+%package static
+Summary:	Static library to encode performance events for perf_events based tools
+Group:		Development/Libraries
+Requires:	%{name}%{?_isa} = %{version}-%{release}
+
+%description static
+Static version of the libpfm library for performance monitoring
+applications for the perf_events interface.
+
+%if %{with python}
+%package -n python2-libpfm
+%{?python_provide:%python_provide python2-libpfm}
 Summary:	Python bindings for libpfm and perf_event_open system call
 Group:		Development/Languages
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
-%description python
+%description -n python2-libpfm
 Python bindings for libpfm4 and perf_event_open system call.
 %endif
 
@@ -48,19 +65,20 @@ Python bindings for libpfm4 and perf_event_open system call.
 %setup -q
 
 %build
-%if %{with_python}
+%if %{with python}
 %global python_config CONFIG_PFMLIB_NOPYTHON=n
 %else
 %global python_config CONFIG_PFMLIB_NOPYTHON=y
 %endif
-make %{python_config} %{?_smp_mflags}
+make %{python_config} %{?_smp_mflags} \
+     OPTIM="%{optflags}" LDFLAGS="%{build_ldflags}"
 
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%if %{with_python}
-%global python_config CONFIG_PFMLIB_NOPYTHON=n
+%if %{with python}
+%global python_config CONFIG_PFMLIB_NOPYTHON=n PYTHON_PREFIX=$RPM_BUILD_ROOT/%{python_prefix}
 %else
 %global python_config CONFIG_PFMLIB_NOPYTHON=y
 %endif
@@ -68,35 +86,34 @@ rm -rf $RPM_BUILD_ROOT
 make \
     PREFIX=$RPM_BUILD_ROOT%{_prefix} \
     LIBDIR=$RPM_BUILD_ROOT%{_libdir} \
-    PYTHON_PREFIX=$RPM_BUILD_ROOT/%{python_prefix} \
     %{python_config} \
     LDCONFIG=/bin/true \
     install
-
-%clean
-rm -fr $RPM_BUILD_ROOT
 
 %post -p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
 
 %files
-%defattr(644,root,root,755)
 %doc README
-%attr(755,root,root) %{_libdir}/lib*.so*
+%{_libdir}/lib*.so.*
 
 %files devel
-%defattr(644,root,root,755)
 %{_includedir}/*
 %{_mandir}/man3/*
+%{_libdir}/lib*.so
+
+%files static
 %{_libdir}/lib*.a
 
-%if %{with_python}
-%files python
-%defattr(644,root,root,755)
-%attr(755,root,root) %{python_sitearch}/*
+%if %{with python}
+%files -n python2-libpfm
+%{python_sitearch}/*
 %endif
 
 %changelog
+* Mon Jun 4 2018 William Cohen <wcohen@redhat.com> 4.9.0-1
+- Update spec file.
+
 * Tue Feb 9 2016 William Cohen <wcohen@redhat.com> 4.6.0-1
 - Update spec file.
 
