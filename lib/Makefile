@@ -371,6 +371,7 @@ INC_ARM64=events/arm_cortex_a57_events.h	\
         events/arm_xgene_events.h		\
 	events/arm_cavium_tx2_events.h		\
 	events/arm_marvell_tx2_unc_events.h	\
+	events/arm_fujitsu_a64fx_events.h	\
 	events/arm_neoverse_n1_events.h
 
 INCDEP=$(INC_COMMON) $(INCARCH)
