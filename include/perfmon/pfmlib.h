@@ -562,6 +562,8 @@ typedef enum {
 
 	PFM_PMU_ARM_A64FX,		/* Fujitsu A64FX processor */
 	PFM_PMU_ARM_N1,			/* ARM Neoverse N1 */
+
+	PFM_PMU_AMD64_FAM19H_ZEN3,	/* AMD AMD64 Fam19h Zen3 */
 	/* MUST ADD NEW PMU MODELS HERE */
 
 	PFM_PMU_MAX			/* end marker */
