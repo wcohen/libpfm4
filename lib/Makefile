@@ -125,7 +125,7 @@ SRCS   += pfmlib_amd64.c pfmlib_intel_core.c pfmlib_intel_x86.c \
 	  pfmlib_amd64_fam11h.c pfmlib_amd64_fam12h.c \
 	  pfmlib_amd64_fam14h.c pfmlib_amd64_fam15h.c \
 	  pfmlib_amd64_fam17h.c pfmlib_amd64_fam16h.c \
-	  pfmlib_amd64_fam19h.c
+	  pfmlib_amd64_fam19h.c pfmlib_amd64_rapl.c
 
 CFLAGS += -DCONFIG_PFMLIB_ARCH_X86
 
