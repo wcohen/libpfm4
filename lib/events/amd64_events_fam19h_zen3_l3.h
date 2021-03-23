@@ -34,18 +34,18 @@ static const amd64_umask_t amd64_fam19h_zen3_l3_requests[]={
 };
 
 static const amd64_entry_t amd64_fam19h_zen3_l3_pe[]={
-  { .name   = "REQUESTS",
+  { .name   = "UNC_L3_REQUESTS",
     .desc   = "Number of requests to L3 cache",
     .code    = 0x04,
     .ngrp    = 1,
     .numasks = LIBPFM_ARRAY_SIZE(amd64_fam19h_zen3_l3_requests),
     .umasks = amd64_fam19h_zen3_l3_requests,
   },
-  { .name   = "MISS_LATENCY",
+  { .name   = "UNC_L3_MISS_LATENCY",
     .desc   = "Accumulated miss latency in cycles - occupancy event",
     .code    = 0x90,
   },
-  { .name   = "MISSES",
+  { .name   = "UNC_L3_MISSES",
     .desc   = "Number of L3 cache misses",
     .code    = 0x9a,
     .ngrp    = 1,
