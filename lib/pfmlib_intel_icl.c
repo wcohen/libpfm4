@@ -39,6 +39,7 @@ static const int icl_models[] = {
 
 static const int icx_models[] = {
 	106, /* IcelakeX */
+	0
 };
 
 static int
