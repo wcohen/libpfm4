@@ -146,7 +146,7 @@ pfm_amd64_perf_validate_pattrs(void *this, pfmlib_event_desc_t *e)
 				compact = 1;
 
 			/* older processors do not support hypervisor priv level */
-			if (!IS_FAMILY_10H(pmu) && e->pattrs[i].idx == PERF_ATTR_H)
+			if (e->pattrs[i].idx == PERF_ATTR_H &&!pfm_amd64_supports_virt(pmu))
 				compact = 1;
 		}
 
