@@ -58,6 +58,7 @@ typedef struct {
 	const char	*name;			/* name */
 	const char	*desc;			/* description */
 	const char	*equiv;			/* event is aliased to */
+	const char	*pmu;			/* PMU instance (sysfs) */
 	uint64_t	id;			/* perf_hw_id or equivalent */
 	int		modmsk;			/* modifiers bitmask */
 	int		type;			/* perf_type_id */
@@ -102,11 +103,21 @@ typedef struct {
 	  .umask_ovfl_idx = PERF_INVAL_OVFL_IDX,\
 	}
 
+#define PCL_EVTR(f, t, a, d)\
+	{ .name = #f,		\
+	  .id = a,		\
+	  .type = t,		\
+	  .desc = d,		\
+	  .umask_ovfl_idx = PERF_INVAL_OVFL_IDX,\
+	}
+
+
 #define PCL_EVT_HW(n) PCL_EVT(PERF_COUNT_HW_##n, PERF_TYPE_HARDWARE, PERF_ATTR_HW, 0)
 #define PCL_EVT_SW(n) PCL_EVT(PERF_COUNT_SW_##n, PERF_TYPE_SOFTWARE, PERF_ATTR_SW, 0)
 #define PCL_EVT_AHW(n, a) PCL_EVTA(n, PERF_TYPE_HARDWARE, PERF_ATTR_HW, PERF_COUNT_HW_##a, 0)
 #define PCL_EVT_ASW(n, a) PCL_EVTA(n, PERF_TYPE_SOFTWARE, PERF_ATTR_SW, PERF_COUNT_SW_##a, 0)
 #define PCL_EVT_HW_FL(n, fl) PCL_EVT(PERF_COUNT_HW_##n, PERF_TYPE_HARDWARE, PERF_ATTR_HW, fl)
+#define PCL_EVT_RAW(n, e, u, d) PCL_EVTR(n, PERF_TYPE_RAW, (u) << 8 | (e), d)
 
 #ifndef MAXPATHLEN
 #define MAXPATHLEN	1024
@@ -497,6 +508,44 @@ pfm_perf_detect(void *this)
 #endif
 }
 
+/*
+ * checks that the event is exported by the PMU specified by the event entry
+ * This code assumes the PMU type is RAW, which requires an encoding exported
+ * via sysfs.
+ */
+static int
+event_exist(perf_event_t *e)
+{
+	char buf[PATH_MAX];
+
+	snprintf(buf, PATH_MAX, "/sys/devices/%s/events/%s", e->pmu ? e->pmu : "cpu", e->name);
+
+	return access(buf, F_OK) == 0;
+}
+
+static void
+add_optional_events(void)
+{
+	perf_event_t *ent, *e;
+	size_t i;
+
+	for (i = 0; i < PME_PERF_EVENT_OPT_COUNT; i++) {
+
+		e = perf_optional_events + i;
+
+		if (!event_exist(e)) {
+			DPRINT("perf::%s not available\n", e->name);
+			continue;
+		}
+
+		ent = perf_table_alloc_event();
+
+		memcpy(ent, e, sizeof(*e));
+
+		perf_nevents++;
+	}
+}
+
 static int
 pfm_perf_init(void *this)
 {
@@ -512,6 +561,10 @@ pfm_perf_init(void *this)
 
 	/* must dynamically add tracepoints */
 	gen_tracepoint_table();
+
+	/* must dynamically add optional hw events */
+	add_optional_events();
+
 	/* dynamically patch supported plm based on CORE PMU plm */
 	pmu->supported_plm = pfm_perf_pmu_supported_plm(pmu);
 
@@ -695,6 +748,7 @@ pfm_perf_get_encoding(void *this, pfmlib_event_desc_t *e)
 		break;
 	case PERF_TYPE_HARDWARE:
 	case PERF_TYPE_SOFTWARE:
+	case PERF_TYPE_RAW:
 		ret = PFM_SUCCESS;
 		e->codes[0] = perf_pe[e->event].id;
 		e->count = 1;
@@ -724,6 +778,7 @@ pfm_perf_get_perf_encoding(void *this, pfmlib_event_desc_t *e)
 		break;
 	case PERF_TYPE_HARDWARE:
 	case PERF_TYPE_SOFTWARE:
+	case PERF_TYPE_RAW:
 		ret = PFM_SUCCESS;
 		e->codes[0] = perf_pe[e->event].id;
 		e->count = 1;
