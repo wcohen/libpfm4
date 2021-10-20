@@ -220,8 +220,7 @@ get_debugfs_mnt(void)
 			break;
 		}
 	}
-	if (buffer)
-		free(buffer);
+	free(buffer);
 
 	fclose(fp);
 
@@ -253,7 +252,10 @@ perf_table_clone(void)
 	}
 	return addr;
 }
-
+static inline int perf_pe_allocated(void)
+{
+	return perf_pe != perf_static_events;
+}
 /*
  * allocate space for one new event in event table
  *
@@ -265,7 +267,19 @@ static perf_event_t *
 perf_table_alloc_event(void)
 {
 	perf_event_t *new_pe;
+	perf_event_t *p;
 
+	/*
+	 * if we need to allocate an event and we have not yet
+	 * cloned the static events, then clone them
+	 */
+	if (!perf_pe_allocated()) {
+		DPRINT("cloning static event table\n");
+		p = perf_table_clone();
+		if (!p)
+			return NULL;
+		perf_pe = p;
+	}
 retry:
 	if (perf_pe_free < perf_pe_end)
 		return perf_pe_free++;
@@ -351,8 +365,6 @@ gen_tracepoint_table(void)
 	dir1 = opendir(debugfs_mnt);
 	if (!dir1)
 		return;
-
-	p = perf_table_clone();
 
 	err = 0;
 	while((d1 = readdir(dir1)) && err >= 0) {
@@ -479,7 +491,7 @@ gen_tracepoint_table(void)
 		 */
 		if (!numasks) {
 			free(tracepoint_name);
-			reuse_event =1;
+			reuse_event = 1;
 			continue;
 		}
 
@@ -539,7 +551,8 @@ add_optional_events(void)
 		}
 
 		ent = perf_table_alloc_event();
-
+		if (!ent)
+			break;
 		memcpy(ent, e, sizeof(*e));
 
 		perf_nevents++;
@@ -550,7 +563,9 @@ static int
 pfm_perf_init(void *this)
 {
 	pfmlib_pmu_t *pmu = this;
+
 	perf_pe = perf_static_events;
+
 	/*
 	 * we force the value of pme_count by hand because
 	 * the library could be initialized mutltiple times
@@ -853,14 +868,15 @@ pfm_perf_terminate(void *this)
 	perf_event_t *p;
 	int i, j;
 
-	if (!(perf_pe && perf_um))
+	/* if perf_pe not allocated then perf_um not allocated */
+	if (!perf_pe_allocated())
 		return;
 
 	/*
 	 * free tracepoints name + unit mask names
 	 * which are dynamically allocated
 	 */
-	for (i=0; i < perf_nevents; i++) {
+	for (i = 0; i < perf_nevents; i++) {
 		p = &perf_pe[i];
 
 		if (p->type != PERF_TYPE_TRACEPOINT)
@@ -877,7 +893,7 @@ pfm_perf_terminate(void *this)
 		 * first PERF_MAX_UMASKS are pre-allocated
 		 * the rest is in a separate dynamic table
 		 */
-		for (j=0; j < p->numasks; j++) {
+		for (j = 0; j < p->numasks; j++) {
 			if (j == PERF_MAX_UMASKS)
 				break;
 			free((void *)p->umasks[j].uname);
@@ -886,9 +902,10 @@ pfm_perf_terminate(void *this)
 	/*
 	 * perf_pe is systematically allocated
 	 */
-	free(perf_pe);
-	perf_pe = NULL;
-	perf_pe_free = perf_pe_end = NULL;
+	if (perf_pe_allocated()) {
+		free(perf_pe);
+		perf_pe = perf_pe_free = perf_pe_end = NULL;
+	}
 
 	if (perf_um) {
 		int n;
@@ -896,9 +913,8 @@ pfm_perf_terminate(void *this)
 		 * free the dynamic umasks' uname
 		 */
 		n = perf_um_free - perf_um;
-		for(i=0; i < n; i++) {
+		for(i=0; i < n; i++)
 			free((void *)(perf_um[i].uname));
-		}
 		free(perf_um);
 		perf_um = NULL;
 		perf_um_free = perf_um_end = NULL;
