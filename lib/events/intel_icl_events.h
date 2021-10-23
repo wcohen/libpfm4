@@ -1601,7 +1601,7 @@ static const intel_x86_umask_t intel_icl_sw_prefetch_access[]={
 static const intel_x86_umask_t intel_icl_longest_lat_cache[]={
   { .uname   = "MISS",
     .udesc   = "Core-originated cacheable demand requests missed L3",
-    .ucode   = 0x0100ull,
+    .ucode   = 0x4100ull,
     .uflags  = INTEL_X86_DFL,
   },
 };
