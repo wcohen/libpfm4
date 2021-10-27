@@ -38,6 +38,7 @@
 #include "events/arm_fujitsu_a64fx_events.h"	/* Fujitsu A64FX PMU tables */
 #include "events/arm_neoverse_n1_events.h"	/* ARM Neoverse N1 table */
 #include "events/arm_neoverse_n2_events.h"	/* ARM Neoverse N2 table */
+#include "events/arm_hisilicon_kunpeng_events.h" /* HiSilicon Kunpeng PMU tables */
 
 static int
 pfm_arm_detect_n1(void *this)
@@ -150,6 +151,22 @@ pfm_arm_detect_a64fx(void *this)
 
 	if ((pfm_arm_cfg.implementer == 0x46) && /* Fujitsu */
 		(pfm_arm_cfg.part == 0x001)) { /* a64fx */
+			return PFM_SUCCESS;
+	}
+	return PFM_ERR_NOTSUPP;
+}
+
+static int
+pfm_arm_detect_hisilicon_kunpeng(void *this)
+{
+	int ret;
+
+	ret = pfm_arm_detect(this);
+	if (ret != PFM_SUCCESS)
+		return PFM_ERR_NOTSUPP;
+
+	if ((pfm_arm_cfg.implementer == 0x48) && /* HiSilicon */
+	    (pfm_arm_cfg.part == 0xd01)) { /* Kunpeng */
 			return PFM_SUCCESS;
 	}
 	return PFM_ERR_NOTSUPP;
@@ -283,6 +300,32 @@ pfmlib_pmu_t arm_fujitsu_a64fx_support={
 	.get_event_attr_info	= pfm_arm_get_event_attr_info,
 	 PFMLIB_VALID_PERF_PATTRS(pfm_arm_perf_validate_pattrs),
 	.get_event_nattrs	= pfm_arm_get_event_nattrs,
+};
+
+/* HiSilicon Kunpeng support */
+pfmlib_pmu_t arm_hisilicon_kunpeng_support={
+	.desc           = "Hisilicon Kunpeng",
+	.name           = "arm_kunpeng",
+	.pmu            = PFM_PMU_ARM_KUNPENG,
+	.pme_count      = LIBPFM_ARRAY_SIZE(arm_kunpeng_pe),
+	.type           = PFM_PMU_TYPE_CORE,
+	.supported_plm  = ARMV8_PLM,
+	.pe             = arm_kunpeng_pe,
+	.pmu_detect     = pfm_arm_detect_hisilicon_kunpeng,
+	.max_encoding   = 1,
+	.num_cntrs      = 12,
+	.num_fixed_cntrs      = 1,
+
+	.get_event_encoding[PFM_OS_NONE] = pfm_arm_get_encoding,
+	PFMLIB_ENCODE_PERF(pfm_arm_get_perf_encoding),
+	.get_event_first        = pfm_arm_get_event_first,
+	.get_event_next         = pfm_arm_get_event_next,
+	.event_is_valid         = pfm_arm_event_is_valid,
+	.validate_table         = pfm_arm_validate_table,
+	.get_event_info         = pfm_arm_get_event_info,
+	.get_event_attr_info    = pfm_arm_get_event_attr_info,
+	PFMLIB_VALID_PERF_PATTRS(pfm_arm_perf_validate_pattrs),
+	.get_event_nattrs       = pfm_arm_get_event_nattrs,
 };
 
 // For uncore, each socket has a separate perf name, otherwise they are the same, use macro

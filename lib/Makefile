@@ -369,7 +369,8 @@ INC_ARM=pfmlib_arm_priv.h			\
 	events/arm_cavium_tx2_events.h		\
 	events/arm_marvell_tx2_unc_events.h	\
 	events/arm_neoverse_n1_events.h		\
-	events/arm_neoverse_n2_events.h
+	events/arm_neoverse_n2_events.h		\
+	events/arm_hisilicon_kunpeng_events.h
 
 INC_ARM64=events/arm_cortex_a57_events.h	\
 	events/arm_cortex_a53_events.h		\
@@ -378,7 +379,8 @@ INC_ARM64=events/arm_cortex_a57_events.h	\
 	events/arm_marvell_tx2_unc_events.h	\
 	events/arm_fujitsu_a64fx_events.h	\
 	events/arm_neoverse_n1_events.h		\
-	events/arm_neoverse_n2_events.h
+	events/arm_neoverse_n2_events.h		\
+	events/arm_hisilicon_kunpeng_events.h
 
 INCDEP=$(INC_COMMON) $(INCARCH)
 
