@@ -139,6 +139,11 @@ static const arm_entry_t arm_n1_pe[]={
 	 .code = 0x1c,
 	 .desc = "Instructions architecturally executed (condition check pass, write to TTBR). Counts writes to TTBR0_EL1/TTBR1_EL1 in aarch64 mode"
 	},
+	{.name = "BUS_CYCLES",
+	 .modmsk = ARMV8_ATTRS,
+	 .code = 0x1d,
+	 .desc = "Bus cycles. This event duplicates CPU_CYCLES",
+	},
 	{.name = "L2D_CACHE_ALLOCATE",
 	 .modmsk = ARMV8_ATTRS,
 	 .code = 0x20,
@@ -354,17 +359,28 @@ static const arm_entry_t arm_n1_pe[]={
 	 .code = 0x61,
 	 .desc = "Bus write accesses"
 	},
-	{.name = "MEM_READ_ACCESS",
+	{.name = "MEM_ACCESS_RD",
 	 .modmsk = ARMV8_ATTRS,
 	 .code = 0x66,
 	 .desc = "Data memory read accesses"
 	},
-	{.name = "MEM_WRITE_ACCESS",
+	{.name = "MEM_READ_ACCESS",
+	 .modmsk = ARMV8_ATTRS,
+	 .equiv = "MEM_ACCESS_RD",
+	 .code = 0x66,
+	 .desc = "Data memory read accesses"
+	},
+	{.name = "MEM_ACCESS_WR",
 	 .modmsk = ARMV8_ATTRS,
 	 .code = 0x67,
 	 .desc = "Data memory write accesses"
 	},
-
+	{.name = "MEM_WRITE_ACCESS",
+	 .modmsk = ARMV8_ATTRS,
+	 .equiv = "MEM_ACCESS_WR",
+	 .code = 0x67,
+	 .desc = "Data memory write accesses"
+	},
 	{.name = "UNALIGNED_LD_SPEC",
 	 .modmsk = ARMV8_ATTRS,
 	 .code = 0x68,
@@ -375,12 +391,17 @@ static const arm_entry_t arm_n1_pe[]={
 	 .code = 0x69,
 	 .desc = "Unaligned write accesses"
 	},
-	{.name = "UNALIGNED_LDST_ACCESS",
+	{.name = "UNALIGNED_LDST_SPEC",
 	 .modmsk = ARMV8_ATTRS,
 	 .code = 0x6a,
 	 .desc = "Unaligned accesses"
 	},
-
+	{.name = "UNALIGNED_LDST_ACCESS",
+	 .modmsk = ARMV8_ATTRS,
+	 .equiv = "UNALIGNED_LDST_SPEC",
+	 .code = 0x6a,
+	 .desc = "Unaligned accesses"
+	},
 	{.name = "LDREX_SPEC",
 	 .modmsk = ARMV8_ATTRS,
 	 .code = 0x6c,
@@ -447,6 +468,12 @@ static const arm_entry_t arm_n1_pe[]={
 	 .desc = "Immediate branches speculatively executed"
 	},
 	{.name = "BR_RET_SPEC",
+	 .modmsk = ARMV8_ATTRS,
+	 .equiv = "BR_RETURN_SPEC",
+	 .code = 0x79,
+	 .desc = "Return branches speculatively executed"
+	},
+	{.name = "BR_RETURN_SPEC",
 	 .modmsk = ARMV8_ATTRS,
 	 .code = 0x79,
 	 .desc = "Return branches speculatively executed"
