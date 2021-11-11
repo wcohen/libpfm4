@@ -342,7 +342,7 @@ pfm_arm_get_event_info(void *this, int idx, pfm_event_info_t *info)
 	info->name  = pe[idx].name;
 	info->desc  = pe[idx].desc;
 	info->code  = pe[idx].code;
-	info->equiv = NULL;
+	info->equiv = pe[idx].equiv;
 	info->idx   = idx; /* private index */
 	info->pmu   = pmu->pmu;
 	info->is_precise = 0;
