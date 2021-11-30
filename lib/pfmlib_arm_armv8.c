@@ -388,7 +388,7 @@ DEFINE_TX2_LLC(1);
 pfmlib_pmu_t arm_thunderx2_ccpi##n##_support={ \
 	.desc			= "Marvell ThunderX2 node "#n" Cross-Socket Interconnect", \
 	.name			= "tx2_ccpi"#n, \
-	.perf_name		= "uncore_ccpi_"#n, \
+	.perf_name		= "uncore_ccpi2_"#n, \
 	.pmu			= PFM_PMU_ARM_THUNDERX2_CCPI##n, \
 	.pme_count		= LIBPFM_ARRAY_SIZE(arm_thunderx2_unc_ccpi_pe), \
 	.type			= PFM_PMU_TYPE_UNCORE, \
