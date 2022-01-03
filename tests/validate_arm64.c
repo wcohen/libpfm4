@@ -310,6 +310,27 @@ static const test_event_t arm64_test_events[]={
 		.codes[0] = 0x8000008,
 		.fstr = "arm_kunpeng::INST_RETIRED:k=1:u=1:hv=0",
 	},
+	{ SRC_LINE,
+	  .name = "hisi_sccl1_l3c8::rd_cpipe",
+	  .ret  = PFM_SUCCESS,
+	  .count = 1,
+	  .codes[0] = 0x00,
+	  .fstr = "hisi_sccl1_l3c8::rd_cpipe",
+	},
+	{ SRC_LINE,
+	  .name = "hisi_sccl1_hha2::rx_ops_num",
+	  .ret  = PFM_SUCCESS,
+	  .count = 1,
+	  .codes[0] = 0x00,
+	  .fstr = "hisi_sccl1_hha2::rx_ops_num",
+	},
+	{ SRC_LINE,
+	  .name = "hisi_sccl1_ddrc0::flux_wr",
+	  .ret  = PFM_SUCCESS,
+	  .count = 1,
+	  .codes[0] = 0x00,
+	  .fstr = "hisi_sccl1_ddrc0::flux_wr",
+	}
 };
 #define NUM_TEST_EVENTS (int)(sizeof(arm64_test_events)/sizeof(test_event_t))
 
