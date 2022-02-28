@@ -147,6 +147,7 @@ pfm_rapl_detect(void *this)
 		case  85: /* Skylake X */
 		case  106:/* IcelakeX */
 		case  108:/* IcelakeD */
+		case  143:/* SapphireRapidX */
 			intel_rapl_support.pe 	     = intel_rapl_hswep_pe;
 			intel_rapl_support.pme_count = LIBPFM_ARRAY_SIZE(intel_rapl_hswep_pe);
 			break;
