@@ -7930,6 +7930,20 @@ static const test_event_t x86_test_events[]={
 	  .codes[0] = 0x15640ec,
 	  .fstr = "spr::CPU_CLK_UNHALTED:PAUSE_INST:k=1:u=0:e=1:i=0:c=1:intx=0:intxcp=0",
 	},
+	{ SRC_LINE,
+	  .name = "spr::ARITH.FP_DIVIDER_ACTIVE",
+	  .ret = PFM_SUCCESS,
+	  .count = 1,
+	  .codes[0] = 0x15301b0,
+	  .fstr = "spr::ARITH:FPDIV_ACTIVE:k=1:u=1:e=0:i=0:c=1:intx=0:intxcp=0",
+	},
+	{ SRC_LINE,
+	  .name = "spr::UOPS_RETIRED.STALLS",
+	  .ret = PFM_SUCCESS,
+	  .count = 1,
+	  .codes[0] = 0x1d302c2,
+	  .fstr = "spr::UOPS_RETIRED:STALLS:k=1:u=1:e=0:i=1:c=1:intx=0:intxcp=0",
+	},
 };
 
 #define NUM_TEST_EVENTS (int)(sizeof(x86_test_events)/sizeof(test_event_t))
