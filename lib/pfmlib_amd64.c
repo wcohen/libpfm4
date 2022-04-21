@@ -823,7 +823,7 @@ pfm_amd64_validate_table(void *this, FILE *fp)
 			}
 		}
 		for (j=i+1; j < (unsigned int)pmu->pme_count; j++) {
-			if (pe[i].code == pe[j].code) {
+			if (pe[i].code == pe[j].code && pe[i].flags == pe[j].flags) {
 				fprintf(fp, "pmu: %s events %s and %s have the same code 0x%x\n", pmu->name, pe[i].name, pe[j].name, pe[i].code);
 				error++;
 			}
