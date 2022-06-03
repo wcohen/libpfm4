@@ -26,6 +26,16 @@
  */
 
 static const intel_x86_umask_t intel_spr_ocr[]={
+  { .uname   = "WRITE_ESTIMATE_MEMORY",
+    .udesc   = "Counts Demand RFOs, ItoM's, PREFECTHW's, Hardware RFO Prefetches to the L1/L2 and Streaming stores that likely resulted in a store to Memory (DRAM or PMM)",
+    .ucode   = 0xfbff8082200ull,
+    .uflags  = INTEL_X86_NCOMBO,
+  },
+  { .uname   = "READS_TO_CORE_REMOTE_MEMORY",
+    .udesc   = "Counts all (cacheable) data read, code read and RFO requests including demands and prefetches to the core caches (L1 or L2) that were supplied by DRAM or PMM attached to another socket.",
+    .ucode   = 0x73300447700ull,
+    .uflags  = INTEL_X86_NCOMBO,
+  },
   { .uname   = "DEMAND_CODE_RD_ANY_RESPONSE",
     .udesc   = "Counts demand instruction fetches and L1 instruction cache prefetches that have any type of response.",
     .ucode   = 0x1000400ull,
@@ -821,7 +831,7 @@ static const intel_x86_umask_t intel_spr_br_misp_retired[]={
     .uflags  = INTEL_X86_NCOMBO | INTEL_X86_PEBS,
   },
   { .uname   = "COND_TAKEN",
-    .udesc   = "number of branch instructions retired that were mispredicted and taken. Non PEBS",
+    .udesc   = "Number of branch instructions retired that were mispredicted and taken.",
     .ucode   = 0x0100ull,
     .uflags  = INTEL_X86_NCOMBO | INTEL_X86_PEBS,
   },
