@@ -1617,9 +1617,14 @@ static const intel_x86_umask_t intel_spr_sw_prefetch_access[]={
 
 static const intel_x86_umask_t intel_spr_longest_lat_cache[]={
   { .uname   = "MISS",
-    .udesc   = "TBD",
+    .udesc   = "Core-originated cacheable requests that missed L3  (Except hardware prefetches to the L3)",
     .ucode   = 0x4100ull,
     .uflags  = INTEL_X86_DFL,
+  },
+  { .uname   = "REFERENCE",
+    .udesc   = "Core-originated cacheable requests that refer to L3 (Except hardware prefetches to the L3)",
+    .ucode   = 0x4f00ull,
+    .uflags  = INTEL_X86_NCOMBO,
   },
 };
 
@@ -1641,6 +1646,11 @@ static const intel_x86_umask_t intel_spr_l2_lines_out[]={
   { .uname   = "SILENT",
     .udesc   = "Non-modified cache lines that are silently dropped by L2 cache when triggered by an L2 cache fill.",
     .ucode   = 0x0100ull,
+    .uflags  = INTEL_X86_NCOMBO,
+  },
+  { .uname   = "USELESS_HWPF",
+    .udesc   = "Cache lines that have been L2 hardware prefetched but not used by demand accesses",
+    .ucode   = 0x0400ull,
     .uflags  = INTEL_X86_NCOMBO,
   },
 };
@@ -1974,6 +1984,11 @@ static const intel_x86_umask_t intel_spr_cpu_clk_unhalted[]={
     .udesc   = "Reference cycles when the core is not in halt state (Fixed Counter 2).",
     .ucode   = 0x0300ull,
     .uflags  = INTEL_X86_NCOMBO | INTEL_X86_CODE_OVERRIDE,
+  },
+  { .uname   = "REF_TSC_P",
+    .udesc   = "Reference cycles when the core is not in halt state (Programmable Counter).",
+    .ucode   = 0x0100ull,
+    .uflags  = INTEL_X86_NCOMBO,
   },
   { .uname   = "THREAD",
     .udesc   = "Core cycles when the thread is not in halt state",
