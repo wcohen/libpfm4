@@ -4,6 +4,9 @@
  * Copyright (c) 2014 Google Inc. All rights reserved
  * Contributed by Stephane Eranian <eranian@gmail.com>
  *
+ * Copyright (c) 2022, NVIDIA CORPORATION & AFFILIATES.
+ * Contributed by John Linford <jlinford@nvidia.com>
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -38,6 +41,7 @@
 #include "events/arm_fujitsu_a64fx_events.h"	/* Fujitsu A64FX PMU tables */
 #include "events/arm_neoverse_n1_events.h"	/* ARM Neoverse N1 table */
 #include "events/arm_neoverse_n2_events.h"	/* ARM Neoverse N2 table */
+#include "events/arm_neoverse_v1_events.h"	/* Arm Neoverse V1 table */
 #include "events/arm_hisilicon_kunpeng_events.h" /* HiSilicon Kunpeng PMU tables */
 #include "events/arm_hisilicon_kunpeng_unc_events.h" /* Hisilicon Kunpeng PMU uncore tables */
 
@@ -68,6 +72,22 @@ pfm_arm_detect_n2(void *this)
 
 	if ((pfm_arm_cfg.implementer == 0x41) && /* ARM */
 		(pfm_arm_cfg.part == 0xd49)) { /* Neoverse N2 */
+			return PFM_SUCCESS;
+	}
+	return PFM_ERR_NOTSUPP;
+}
+
+static int
+pfm_arm_detect_v1(void *this)
+{
+	int ret;
+
+	ret = pfm_arm_detect(this);
+	if (ret != PFM_SUCCESS)
+		return PFM_ERR_NOTSUPP;
+
+	if ((pfm_arm_cfg.implementer == 0x41) && /* ARM */
+		(pfm_arm_cfg.part == 0xd40)) { /* Neoverse V1 */
 			return PFM_SUCCESS;
 	}
 	return PFM_ERR_NOTSUPP;
@@ -581,6 +601,31 @@ pfmlib_pmu_t arm_n2_support={
 	.pe			= arm_n2_pe,
 
 	.pmu_detect		= pfm_arm_detect_n2,
+	.max_encoding		= 1,
+	.num_cntrs		= 6,
+
+	.get_event_encoding[PFM_OS_NONE] = pfm_arm_get_encoding,
+	 PFMLIB_ENCODE_PERF(pfm_arm_get_perf_encoding),
+	.get_event_first	= pfm_arm_get_event_first,
+	.get_event_next		= pfm_arm_get_event_next,
+	.event_is_valid		= pfm_arm_event_is_valid,
+	.validate_table		= pfm_arm_validate_table,
+	.get_event_info		= pfm_arm_get_event_info,
+	.get_event_attr_info	= pfm_arm_get_event_attr_info,
+	 PFMLIB_VALID_PERF_PATTRS(pfm_arm_perf_validate_pattrs),
+	.get_event_nattrs	= pfm_arm_get_event_nattrs,
+};
+
+pfmlib_pmu_t arm_v1_support={
+	.desc			= "Arm Neoverse V1",
+	.name			= "arm_v1",
+	.pmu			= PFM_PMU_ARM_V1,
+	.pme_count		= LIBPFM_ARRAY_SIZE(arm_v1_pe),
+	.type			= PFM_PMU_TYPE_CORE,
+	.supported_plm  = ARMV8_PLM,
+	.pe             = arm_v1_pe,
+
+	.pmu_detect		= pfm_arm_detect_v1,
 	.max_encoding		= 1,
 	.num_cntrs		= 6,
 

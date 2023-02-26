@@ -129,7 +129,8 @@ ARCH_MAN += libpfm_arm_xgene.3 \
 	    libpfm_arm_ac9.3 \
 	    libpfm_arm_qcom_krait.3 \
 	    libpfm_arm_neoverse_n1.3 \
-	    libpfm_arm_neoverse_n2.3
+	    libpfm_arm_neoverse_n2.3 \
+		libpfm_arm_neoverse_v1.3
 endif
 
 ifeq ($(CONFIG_PFMLIB_ARCH_ARM64),y)
@@ -137,7 +138,8 @@ ARCH_MAN += libpfm_arm_xgene.3 \
 	    libpfm_arm_ac57.3 \
 	    libpfm_arm_ac53.3 \
 	    libpfm_arm_a64fx.3 \
-	    libpfm_arm_neoverse_n2.3
+	    libpfm_arm_neoverse_n2.3 \
+		libpfm_arm_neoverse_v1.3
 endif
 
 ifeq ($(CONFIG_PFMLIB_ARCH_MIPS),y)

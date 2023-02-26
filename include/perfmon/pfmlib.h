@@ -2,6 +2,9 @@
  * Copyright (c) 2009 Google, Inc
  * Contributed by Stephane Eranian <eranian@gmail.com>
  *
+ * Copyright (c) 2022, NVIDIA CORPORATION & AFFILIATES.
+ * Contributed by John Linford <jlinford@nvidia.com>
+ *
  * Based on:
  * Copyright (c) 2001-2007 Hewlett-Packard Development Company, L.P.
  * Contributed by Stephane Eranian <eranian@hpl.hp.com>
@@ -633,6 +636,8 @@ typedef enum {
 
 	PFM_PMU_POWER10,		/* IBM POWER10 */
 	PFM_PMU_AMD64_FAM19H_ZEN4,	/* AMD AMD64 Fam19h Zen4 */
+	PFM_PMU_ARM_V1,			/* Arm Neoverse V1 */
+
 	/* MUST ADD NEW PMU MODELS HERE */
 
 	PFM_PMU_MAX			/* end marker */
