@@ -673,6 +673,7 @@ static pfmlib_os_t *pfmlib_oses[]={
  * architecture or if the initialization failed.
  */
 static pfmlib_pmu_t *pfmlib_pmus_map[PFM_PMU_MAX];
+static struct pfmlib_pmu *pfmlib_active_pmus_list;
 
 /*
  * A drop-in replacement for strsep(). strsep() is not part of the POSIX
@@ -710,6 +711,9 @@ static char* pfmlib_strsep(char **stringp, const char *delim)
 
 #define pfmlib_for_each_pmu(x) \
 	for((x)= 0 ; (x) < PFMLIB_NUM_PMUS; (x)++)
+
+#define pfmlib_for_each_active_pmu(x) \
+	for((x) = pfmlib_active_pmus_list; x ; (x) = (x)->next_active)
 
 #define pfmlib_for_each_os(x) \
 	for((x)= 0 ; (x) < PFMLIB_NUM_OSES; (x)++)
@@ -1115,6 +1119,16 @@ done:
 	return ret;
 }
 
+static inline void pfmlib_add_active_pmu(struct pfmlib_pmu *pmu)
+{
+	if (pfmlib_active_pmus_list)
+		pfmlib_active_pmus_list->prev_active = pmu;
+
+	pmu->next_active = pfmlib_active_pmus_list;
+	pmu->prev_active = NULL;
+	pfmlib_active_pmus_list = pmu;
+}
+
 static int
 pfmlib_init_pmus(void)
 {
@@ -1158,8 +1172,16 @@ pfmlib_init_pmus(void)
 		 */
 		pfmlib_pmus_map[p->pmu] = p;
 
-		if (ret != PFM_SUCCESS)
+		if (ret != PFM_SUCCESS) {
+			/*
+			 * if LIBPFM_ENCODE_INACTIVE=1, we place all PMUs on the active list.
+			 * we lose the optimization but we do not have to special case the parsing
+			 * code. This is a debug option anyway.
+			 */
+			if (pfm_cfg.inactive)
+				pfmlib_add_active_pmu(p);
 			continue;
+		}
 
 		/*
 		 * check if exported by OS if needed
@@ -1173,8 +1195,10 @@ pfmlib_init_pmus(void)
 		}
 
 		ret = pfmlib_pmu_activate(p);
-		if (ret == PFM_SUCCESS)
+		if (ret == PFM_SUCCESS) {
 			nsuccess++;
+			pfmlib_add_active_pmu(p);
+		}
 
 		if (pfm_cfg.forced_pmu) {
 			__pfm_vbprintf("PMU forced to %s (%s) : %s\n",
@@ -1249,15 +1273,11 @@ void
 pfm_terminate(void)
 {
 	pfmlib_pmu_t *pmu;
-	int i;
 
 	if (PFMLIB_INITIALIZED() == 0)
 		return;
 
-	pfmlib_for_each_pmu(i) {
-		pmu = pfmlib_pmus[i];
-		if (!pfmlib_pmu_active(pmu))
-			continue;
+	pfmlib_for_each_active_pmu(pmu) {
 		if (pmu->pmu_terminate)
 			pmu->pmu_terminate(pmu);
 	}
@@ -1623,7 +1643,7 @@ pfmlib_parse_event(const char *event, pfmlib_event_desc_t *d)
 	pfmlib_pmu_t *pmu;
 	int (*match)(void *this, pfmlib_event_desc_t *d, const char *e, const char *s);
 	const char *pname = NULL;
-	int i, j, ret;
+	int i, ret;
 
 	/*
 	 * support only one event at a time.
@@ -1654,15 +1674,15 @@ pfmlib_parse_event(const char *event, pfmlib_event_desc_t *d)
 	/*
 	 * for each pmu
 	 */
-	pfmlib_for_each_pmu(j) {
-		pmu = pfmlib_pmus[j];
+	pfmlib_for_each_active_pmu(pmu) {
+
 		/*
-		 * if no explicit PMU name is given, then
-		 * only look for active PMU models
+		 * test against active still required in case of
+		 * pfm_cfg.inactive=1 because we put all PMUs on
+		 * the active list to avoid forking this loop
 		 */
 		if (!pname && !pfmlib_pmu_active(pmu))
 			continue;
-
 		/*
 		 * if the PMU name is not passed, then if
 		 * the pmu is deprecated, then skip it. It means
@@ -2297,14 +2317,8 @@ pfmlib_pmu_t *
 pfmlib_get_pmu_by_type(pfm_pmu_type_t t)
 {
 	pfmlib_pmu_t *pmu;
-	int i;
 
-	pfmlib_for_each_pmu(i) {
-		pmu = pfmlib_pmus[i];
-
-		if (!pfmlib_pmu_active(pmu))
-			continue;
-
+	pfmlib_for_each_active_pmu(pmu) {
 		/* first match */
 		if (pmu->type != t)
 			continue;

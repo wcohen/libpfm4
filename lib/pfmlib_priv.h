@@ -131,6 +131,8 @@ typedef struct pfmlib_pmu {
 	const char 	*desc;			/* PMU description */
 	const char 	*name;			/* pmu short name */
 	const char	*perf_name;		/* perf_event pmu name (optional) */
+	struct pfmlib_pmu *next_active;		/* active PMU link list */
+	struct pfmlib_pmu *prev_active;		/* active PMU link list */
 	pfm_pmu_t	pmu;			/* PMU model */
 	int		pme_count;		/* number of events */
 	int		max_encoding;		/* max number of uint64_t to encode an event */
