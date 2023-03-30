@@ -34,13 +34,6 @@
 #include <sys/param.h>
 #endif
 
-/*
- * looks like several distributions do not have
- * the latest libc with openat support, so disable
- * for now
- */
-#undef HAS_OPENAT
-
 #include "pfmlib_priv.h"
 #include "pfmlib_perf_event_priv.h"
 
