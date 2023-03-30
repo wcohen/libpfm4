@@ -1010,8 +1010,8 @@ pfmlib_init_env(void)
 	pfm_cfg.forced_pmu = getenv("LIBPFM_FORCE_PMU");
 
 	str = getenv("LIBPFM_ENCODE_INACTIVE");
-	if (str)
-		pfm_cfg.inactive = 1;
+	if (str && isdigit((int)*str))
+		pfm_cfg.inactive = *str - '0';
 
 	str = getenv("LIBPFM_DISABLED_PMUS");
 	if (str)
