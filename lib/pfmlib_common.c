@@ -1210,6 +1210,12 @@ pfmlib_init_pmus(void)
 		if (p->os_detect[pfmlib_os->id]) {
 			ret = p->os_detect[pfmlib_os->id](p);
 			if (ret != PFM_SUCCESS) {
+				/*
+				 * must force on active list when
+				 * LIBPFM_ENCODE_INACTIVE=1
+				 */
+				if (pfm_cfg.inactive)
+					pfmlib_add_active_pmu(p);
 				DPRINT("%s PMU not exported by OS\n", p->name);
 				continue;
 			}
@@ -1299,6 +1305,9 @@ pfm_terminate(void)
 		return;
 
 	pfmlib_for_each_active_pmu(pmu) {
+		/* handle LIBPFM_ENCODE_INACTIVE=1 */
+		if (!pfmlib_pmu_active(pmu))
+			continue;
 		if (pmu->pmu_terminate)
 			pmu->pmu_terminate(pmu);
 	}
@@ -2346,6 +2355,9 @@ pfmlib_get_pmu_by_type(pfm_pmu_type_t t)
 	pfmlib_pmu_t *pmu;
 
 	pfmlib_for_each_active_pmu(pmu) {
+		/* handle LIBPFM_ENCODE_INACTIVE=1 */
+		if (!pfmlib_pmu_active(pmu))
+			continue;
 		/* first match */
 		if (pmu->type != t)
 			continue;
