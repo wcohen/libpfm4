@@ -1274,6 +1274,8 @@ pfm_initialize(void)
 	if (pfm_cfg.initdone)
 		return pfm_cfg.initret;
 
+	pfmlib_active_pmus_list = NULL;
+
 	/*
 	 * generic sanity checks
 	 */
@@ -1312,6 +1314,7 @@ pfm_terminate(void)
 			pmu->pmu_terminate(pmu);
 	}
 	pfm_cfg.initdone = 0;
+	pfmlib_active_pmus_list = NULL;
 }
 
 int
