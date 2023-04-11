@@ -1129,27 +1129,6 @@ static inline void pfmlib_add_active_pmu(struct pfmlib_pmu *pmu)
 	pfmlib_active_pmus_list = pmu;
 }
 
-static inline void pfmlib_update_recent_pmu(struct pfmlib_pmu *pmu)
-{
-	if (pfmlib_active_pmus_list == pmu)
-		return;
-
-	DPRINT("move PMU to head of active list: %s\n", pmu->name);
-
-	if (pmu->prev_active)
-		pmu->prev_active->next_active = pmu->next_active;
-	if (pmu->next_active)
-		pmu->next_active->prev_active = pmu->prev_active;
-
-	pmu->prev_active = NULL;
-	pmu->next_active = pfmlib_active_pmus_list;
-
-	if (pfmlib_active_pmus_list)
-		pfmlib_active_pmus_list->prev_active = pmu;
-
-	pfmlib_active_pmus_list = pmu;
-}
-
 static int
 pfmlib_init_pmus(void)
 {
@@ -1644,12 +1623,6 @@ pfmlib_parse_equiv_event(const char *event, pfmlib_event_desc_t *d)
 	free(str);
 	return PFM_ERR_NOTFOUND;
 found:
-	/*
-	 * move PMU to head of active list to potentially
-	 * speed up next lookup
-	 */
-	pfmlib_update_recent_pmu(pmu);
-
 	d->pmu = pmu;
 	d->event = i; /* private index */
 
