@@ -127,10 +127,16 @@ typedef struct {
 #define modx(atdesc, a, z)	(atdesc[(a)].z)
 #define attr(e, k)		((e)->pattrs + (e)->attrs[k].id)
 
+typedef struct pfmlib_node {
+	struct pfmlib_node *next;
+	struct pfmlib_node *prev;
+} pfmlib_node_t;
+
 typedef struct pfmlib_pmu {
 	const char 	*desc;			/* PMU description */
 	const char 	*name;			/* pmu short name */
 	const char	*perf_name;		/* perf_event pmu name (optional) */
+	pfmlib_node_t   node;			/* active list node */
 	struct pfmlib_pmu *next_active;		/* active PMU link list */
 	struct pfmlib_pmu *prev_active;		/* active PMU link list */
 	pfm_pmu_t	pmu;			/* PMU model */

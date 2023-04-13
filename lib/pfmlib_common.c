@@ -33,6 +33,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stddef.h>
 #include <stdarg.h>
 #include <limits.h>
 
@@ -673,7 +674,7 @@ static pfmlib_os_t *pfmlib_oses[]={
  * architecture or if the initialization failed.
  */
 static pfmlib_pmu_t *pfmlib_pmus_map[PFM_PMU_MAX];
-static struct pfmlib_pmu *pfmlib_active_pmus_list;
+static pfmlib_node_t pfmlib_active_pmus_list;
 
 /*
  * A drop-in replacement for strsep(). strsep() is not part of the POSIX
@@ -712,13 +713,21 @@ static char* pfmlib_strsep(char **stringp, const char *delim)
 #define pfmlib_for_each_pmu(x) \
 	for((x)= 0 ; (x) < PFMLIB_NUM_PMUS; (x)++)
 
-#define pfmlib_for_each_active_pmu(x) \
-	for((x) = pfmlib_active_pmus_list; x ; (x) = (x)->next_active)
+#define pfmlib_for_each_node(list, n) \
+	for((n) = (list)->next; (list) != (n) ; (n) = (n)->next)
 
 #define pfmlib_for_each_os(x) \
 	for((x)= 0 ; (x) < PFMLIB_NUM_OSES; (x)++)
 
 pfmlib_config_t pfm_cfg;
+
+static inline pfmlib_pmu_t *
+pfmlib_node_to_pmu(pfmlib_node_t *n)
+{
+	void *p = (void *)n;
+	void *offs = (void *)offsetof(pfmlib_pmu_t, node);
+	return (pfmlib_pmu_t *)(p - offs);
+}
 
 void
 __pfm_dbprintf(const char *fmt, ...)
@@ -1119,14 +1128,33 @@ done:
 	return ret;
 }
 
-static inline void pfmlib_add_active_pmu(struct pfmlib_pmu *pmu)
+static inline void
+pfmlib_node_init(pfmlib_node_t *n)
 {
-	if (pfmlib_active_pmus_list)
-		pfmlib_active_pmus_list->prev_active = pmu;
+	n->next = n->prev = n;
+}
 
-	pmu->next_active = pfmlib_active_pmus_list;
-	pmu->prev_active = NULL;
-	pfmlib_active_pmus_list = pmu;
+static inline void
+pfmlib_node_add_tail(pfmlib_node_t *list, pfmlib_node_t *n)
+{
+	n->prev = list->prev;
+	n->next = list;
+
+	list->prev->next = n;
+	list->prev = n;
+}
+
+static inline void
+pfmlib_add_active_pmu(pfmlib_pmu_t *pmu)
+{
+	/*
+	 * We must append to tail of the list to respect the ordering
+	 * of the PMUs in the pfmlib_pmus[] array as the order matters.
+	 * For instance, on Intel x86 there is an architected PMU to
+	 * catch default events and it needs to be checked last to
+	 * give priority to model specific event encodings
+	 */
+	pfmlib_node_add_tail(&pfmlib_active_pmus_list, &pmu->node);
 }
 
 static int
@@ -1253,7 +1281,7 @@ pfm_initialize(void)
 	if (pfm_cfg.initdone)
 		return pfm_cfg.initret;
 
-	pfmlib_active_pmus_list = NULL;
+	pfmlib_node_init(&pfmlib_active_pmus_list);
 
 	/*
 	 * generic sanity checks
@@ -1280,12 +1308,15 @@ pfm_initialize(void)
 void
 pfm_terminate(void)
 {
+	pfmlib_node_t *n;
 	pfmlib_pmu_t *pmu;
 
 	if (PFMLIB_INITIALIZED() == 0)
 		return;
 
-	pfmlib_for_each_active_pmu(pmu) {
+	pfmlib_for_each_node(&pfmlib_active_pmus_list, n) {
+		pmu = pfmlib_node_to_pmu(n);
+
 		/* handle LIBPFM_ENCODE_INACTIVE=1 */
 		if (!pfmlib_pmu_active(pmu))
 			continue;
@@ -1293,7 +1324,8 @@ pfm_terminate(void)
 			pmu->pmu_terminate(pmu);
 	}
 	pfm_cfg.initdone = 0;
-	pfmlib_active_pmus_list = NULL;
+
+	pfmlib_node_init(&pfmlib_active_pmus_list);
 }
 
 int
@@ -1650,6 +1682,7 @@ error:
 int
 pfmlib_parse_event(const char *event, pfmlib_event_desc_t *d)
 {
+	pfmlib_node_t *n;
 	pfm_event_info_t einfo;
 	char *str, *s, *p;
 	pfmlib_pmu_t *pmu;
@@ -1686,7 +1719,8 @@ pfmlib_parse_event(const char *event, pfmlib_event_desc_t *d)
 	/*
 	 * for each pmu
 	 */
-	pfmlib_for_each_active_pmu(pmu) {
+	pfmlib_for_each_node(&pfmlib_active_pmus_list, n) {
+		pmu = pfmlib_node_to_pmu(n);
 
 		/*
 		 * test against active still required in case of
@@ -2329,8 +2363,10 @@ pfmlib_pmu_t *
 pfmlib_get_pmu_by_type(pfm_pmu_type_t t)
 {
 	pfmlib_pmu_t *pmu;
+	pfmlib_node_t *n;
 
-	pfmlib_for_each_active_pmu(pmu) {
+	pfmlib_for_each_node(&pfmlib_active_pmus_list, n) {
+		pmu = pfmlib_node_to_pmu(n);
 		/* handle LIBPFM_ENCODE_INACTIVE=1 */
 		if (!pfmlib_pmu_active(pmu))
 			continue;
