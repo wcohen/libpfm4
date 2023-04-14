@@ -354,7 +354,7 @@ gen_tracepoint_table(void)
 {
 	DIR *dir1, *dir2;
 	struct dirent *d1, *d2;
-	perf_event_t *p;
+	perf_event_t *p = NULL;
 	perf_umask_t *um;
 	char POTENTIALLY_UNUSED d2path[MAXPATHLEN];
 	char idpath[MAXPATHLEN];
