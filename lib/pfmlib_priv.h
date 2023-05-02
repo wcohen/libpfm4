@@ -306,6 +306,7 @@ extern pfmlib_pmu_t intel_clx_support;
 extern pfmlib_pmu_t intel_icl_support;
 extern pfmlib_pmu_t intel_icx_support;
 extern pfmlib_pmu_t intel_spr_support;
+extern pfmlib_pmu_t intel_emr_support;
 extern pfmlib_pmu_t intel_rapl_support;
 extern pfmlib_pmu_t intel_snbep_unc_cb0_support;
 extern pfmlib_pmu_t intel_snbep_unc_cb1_support;
