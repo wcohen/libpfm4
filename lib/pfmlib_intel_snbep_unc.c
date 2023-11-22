@@ -198,6 +198,27 @@ pfm_intel_skx_unc_detect(void *this)
        return PFM_SUCCESS;
 }
 
+int
+pfm_intel_icx_unc_detect(void *this)
+{
+       int ret;
+
+       ret = pfm_intel_x86_detect();
+       if (ret != PFM_SUCCESS)
+
+       if (pfm_intel_x86_cfg.family != 6)
+               return PFM_ERR_NOTSUPP;
+
+       switch(pfm_intel_x86_cfg.model) {
+               case 106: /* Icelake X */
+                         break;
+               default:
+                       return PFM_ERR_NOTSUPP;
+       }
+       return PFM_SUCCESS;
+}
+
+
 
 static void
 display_com(void *this, pfmlib_event_desc_t *e, void *val)

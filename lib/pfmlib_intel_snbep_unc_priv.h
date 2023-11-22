@@ -215,6 +215,8 @@
 	 _SNBEP_UNC_ATTR_E   |\
 	 _SNBEP_UNC_ATTR_T8)
 
+#define ICX_UNC_CHA_ATTRS SKX_UNC_CHA_ATTRS
+
 #define SKX_UNC_CHA_FILT1_ATTRS \
 	(SKX_UNC_CHA_ATTRS   |\
 	 _SNBEP_UNC_ATTR_LOC |\
@@ -298,6 +300,21 @@ typedef union {
 		unsigned long unc_thres:8;	/* counter mask */
 		unsigned long unc_res3:32;	/* reserved */
 	} cha; /* covers skx cha */
+	struct {
+		unsigned long unc_event:8;	/* event code */
+		unsigned long unc_umask:8;	/* unit mask */
+		unsigned long unc_res1:1;	/* reserved */
+		unsigned long unc_rst:1;	/* reset */
+		unsigned long unc_edge:1;	/* edge detect */
+		unsigned long unc_tid:1;	/* tid filter enable */
+		unsigned long unc_ov:1;		/* overflow enable */
+		unsigned long unc_res2:1;	/* reserved */
+		unsigned long unc_en:1;		/* enable */
+		unsigned long unc_inv:1;	/* invert counter mask */
+		unsigned long unc_thres:8;	/* counter mask */
+		unsigned long unc_umask_ext:26;	/* extended umask */
+		unsigned long unc_res3:9;	/* reserved */
+	} icx_cha; /* covers icx cha */
 	struct {
 		unsigned long unc_event:8;	/* event code */
 		unsigned long unc_umask:8;	/* unit mask */
@@ -495,6 +512,7 @@ extern int  pfm_intel_knl_unc_detect(void *this);
 extern int  pfm_intel_knm_unc_detect(void *this);
 extern int  pfm_intel_bdx_unc_detect(void *this);
 extern int  pfm_intel_skx_unc_detect(void *this);
+extern int  pfm_intel_icx_unc_detect(void *this);
 extern int  pfm_intel_snbep_unc_get_perf_encoding(void *this, pfmlib_event_desc_t *e);
 extern int  pfm_intel_snbep_unc_can_auto_encode(void *this, int pidx, int uidx);
 extern int pfm_intel_snbep_unc_get_event_attr_info(void *this, int pidx, int attr_idx, pfmlib_event_attr_info_t *info);
