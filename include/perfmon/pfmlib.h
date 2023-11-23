@@ -681,6 +681,19 @@ typedef enum {
 	PFM_PMU_INTEL_ICX_UNC_CHA38,	/* Intel Icelake-X CHA core 38 uncore */
 	PFM_PMU_INTEL_ICX_UNC_CHA39,	/* Intel Icelake-X CHA core 39 uncore */
 
+	PFM_PMU_INTEL_ICX_UNC_IMC0,	/* Intel Icelake-X IMC channel 0 uncore */
+	PFM_PMU_INTEL_ICX_UNC_IMC1,	/* Intel Icelake-X IMC channel 1 uncore */
+	PFM_PMU_INTEL_ICX_UNC_IMC2,	/* Intel Icelake-X IMC channel 2 uncore */
+	PFM_PMU_INTEL_ICX_UNC_IMC3,	/* Intel Icelake-X IMC channel 3 uncore */
+	PFM_PMU_INTEL_ICX_UNC_IMC4,	/* Intel Icelake-X IMC channel 4 uncore */
+	PFM_PMU_INTEL_ICX_UNC_IMC5,	/* Intel Icelake-X IMC channel 5 uncore */
+	PFM_PMU_INTEL_ICX_UNC_IMC6,	/* Intel Icelake-X IMC channel 6 uncore */
+	PFM_PMU_INTEL_ICX_UNC_IMC7,	/* Intel Icelake-X IMC channel 7 uncore */
+	PFM_PMU_INTEL_ICX_UNC_IMC8,	/* Intel Icelake-X IMC channel 8 uncore */
+	PFM_PMU_INTEL_ICX_UNC_IMC9,	/* Intel Icelake-X IMC channel 9 uncore */
+	PFM_PMU_INTEL_ICX_UNC_IMC10,	/* Intel Icelake-X IMC channel 10 uncore */
+	PFM_PMU_INTEL_ICX_UNC_IMC11,	/* Intel Icelake-X IMC channel 11 uncore */
+
 	/* MUST ADD NEW PMU MODELS HERE */
 
 	PFM_PMU_MAX			/* end marker */
