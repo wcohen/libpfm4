@@ -118,6 +118,7 @@ SRCS   += pfmlib_amd64.c pfmlib_intel_core.c pfmlib_intel_x86.c \
 	  pfmlib_intel_skx_unc_upi.c \
 	  pfmlib_intel_icx_unc_cha.c \
 	  pfmlib_intel_icx_unc_imc.c \
+	  pfmlib_intel_icx_unc_iio.c \
 	  pfmlib_intel_knc.c \
 	  pfmlib_intel_slm.c \
 	  pfmlib_intel_tmt.c \

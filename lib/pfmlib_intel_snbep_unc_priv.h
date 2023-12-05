@@ -231,6 +231,11 @@
 	 _SNBEP_UNC_ATTR_E   |\
 	 _SNBEP_UNC_ATTR_T8)
 
+#define ICX_UNC_IIO_ATTRS     \
+	(_SNBEP_UNC_ATTR_I   |\
+	 _SNBEP_UNC_ATTR_E   |\
+	 _SNBEP_UNC_ATTR_T8)
+
 #define SKX_UNC_IMC_ATTRS     \
 	(_SNBEP_UNC_ATTR_I   |\
 	 _SNBEP_UNC_ATTR_E   |\
