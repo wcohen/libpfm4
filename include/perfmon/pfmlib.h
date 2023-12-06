@@ -701,6 +701,13 @@ typedef enum {
 	PFM_PMU_INTEL_ICX_UNC_IIO4,	/* Intel Icelake-X IIO 4 uncore */
 	PFM_PMU_INTEL_ICX_UNC_IIO5,	/* Intel Icelake-X IIO 5 uncore */
 
+	PFM_PMU_INTEL_ICX_UNC_IRP0,	/* Intel Icelake-X IRP 0 uncore */
+	PFM_PMU_INTEL_ICX_UNC_IRP1,	/* Intel Icelake-X IRP 1 uncore */
+	PFM_PMU_INTEL_ICX_UNC_IRP2,	/* Intel Icelake-X IRP 2 uncore */
+	PFM_PMU_INTEL_ICX_UNC_IRP3,	/* Intel Icelake-X IRP 3 uncore */
+	PFM_PMU_INTEL_ICX_UNC_IRP4,	/* Intel Icelake-X IRP 4 uncore */
+	PFM_PMU_INTEL_ICX_UNC_IRP5,	/* Intel Icelake-X IRP 5 uncore */
+
 	/* MUST ADD NEW PMU MODELS HERE */
 
 	PFM_PMU_MAX			/* end marker */

@@ -8652,6 +8652,13 @@ static const test_event_t x86_test_events[]={
 	  .codes[0] = 0x7020000000483ull,
 	  .fstr = "icx_unc_iio2::UNC_IIO_DATA_REQ_OF_CPU:MEM_READ_PART5:e=0:i=0:t=0",
 	},
+	{ SRC_LINE,
+	  .name = "icx_unc_irp1::UNC_I_CLOCKTICKS",
+	  .ret  = PFM_SUCCESS,
+	  .count = 1,
+	  .codes[0] = 0x01,
+	  .fstr = "icx_unc_irp1::UNC_I_CLOCKTICKS:e=0:i=0:t=0",
+	},
 };
 
 #define NUM_TEST_EVENTS (int)(sizeof(x86_test_events)/sizeof(test_event_t))

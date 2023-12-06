@@ -248,6 +248,8 @@
 	 _SNBEP_UNC_ATTR_E   |\
 	 _SNBEP_UNC_ATTR_T8)
 
+#define ICX_UNC_IRP_ATTRS     SKX_UNC_IRP_ATTRS
+
 #define SKX_UNC_M2M_ATTRS     \
 	(_SNBEP_UNC_ATTR_I   |\
 	 _SNBEP_UNC_ATTR_E   |\
