@@ -357,6 +357,8 @@ extern pfmlib_pmu_t intel_icx_unc_imc8_support;
 extern pfmlib_pmu_t intel_icx_unc_imc9_support;
 extern pfmlib_pmu_t intel_icx_unc_imc10_support;
 extern pfmlib_pmu_t intel_icx_unc_imc11_support;
+extern pfmlib_pmu_t intel_icx_unc_m2m0_support;
+extern pfmlib_pmu_t intel_icx_unc_m2m1_support;
 extern pfmlib_pmu_t intel_icx_unc_iio0_support;
 extern pfmlib_pmu_t intel_icx_unc_iio1_support;
 extern pfmlib_pmu_t intel_icx_unc_iio2_support;

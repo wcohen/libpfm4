@@ -170,6 +170,8 @@ static pfmlib_pmu_t *pfmlib_pmus[]=
 	&intel_icx_unc_imc9_support,
 	&intel_icx_unc_imc10_support,
 	&intel_icx_unc_imc11_support,
+	&intel_icx_unc_m2m0_support,
+	&intel_icx_unc_m2m1_support,
 	&intel_icx_unc_iio0_support,
 	&intel_icx_unc_iio1_support,
 	&intel_icx_unc_iio2_support,

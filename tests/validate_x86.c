@@ -8659,6 +8659,20 @@ static const test_event_t x86_test_events[]={
 	  .codes[0] = 0x01,
 	  .fstr = "icx_unc_irp1::UNC_I_CLOCKTICKS:e=0:i=0:t=0",
 	},
+	{ SRC_LINE,
+	  .name = "icx_unc_m2m0::UNC_M2M_CLOCKTICKS",
+	  .ret  = PFM_SUCCESS,
+	  .count = 1,
+	  .codes[0] = 0x00,
+	  .fstr = "icx_unc_m2m0::UNC_M2M_CLOCKTICKS:e=0:i=0:t=0",
+	},
+	{ SRC_LINE,
+	  .name = "icx_unc_m2m1::UNC_M2M_DIRECTORY_UPDATE",
+	  .ret  = PFM_SUCCESS,
+	  .count = 1,
+	  .codes[0] = 0x12e,
+	  .fstr = "icx_unc_m2m1::UNC_M2M_DIRECTORY_UPDATE:ANY:e=0:i=0:t=0",
+	},
 };
 
 #define NUM_TEST_EVENTS (int)(sizeof(x86_test_events)/sizeof(test_event_t))

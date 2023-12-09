@@ -255,6 +255,8 @@
 	 _SNBEP_UNC_ATTR_E   |\
 	 _SNBEP_UNC_ATTR_T8)
 
+#define ICX_UNC_M2M_ATTRS     SKX_UNC_M2M_ATTRS
+
 #define SKX_UNC_M3UPI_ATTRS   \
 	(_SNBEP_UNC_ATTR_I   |\
 	 _SNBEP_UNC_ATTR_E   |\
@@ -324,6 +326,19 @@ typedef union {
 		unsigned long unc_umask_ext:26;	/* extended umask */
 		unsigned long unc_res3:9;	/* reserved */
 	} icx_cha; /* covers icx cha */
+	struct {
+		unsigned long unc_event:8;	/* event code */
+		unsigned long unc_umask:8;	/* unit mask */
+		unsigned long unc_res1:1;	/* reserved */
+		unsigned long unc_rst:1;	/* reset */
+		unsigned long unc_edge:1;	/* edge detec */
+		unsigned long unc_res2:3;	/* reserved */
+		unsigned long unc_en:1;		/* enable */
+		unsigned long unc_inv:1;	/* invert counter mask */
+		unsigned long unc_thres:8;	/* counter mask */
+		unsigned long unc_umask2:8;	/* extended unit mask */
+		unsigned long unc_res3:24;	/* reserved */
+	} icx_m2m; /* covers icx m2m */
 	struct {
 		unsigned long unc_event:8;	/* event code */
 		unsigned long unc_umask:8;	/* unit mask */
