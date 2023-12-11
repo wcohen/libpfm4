@@ -371,6 +371,7 @@ extern pfmlib_pmu_t intel_icx_unc_irp2_support;
 extern pfmlib_pmu_t intel_icx_unc_irp3_support;
 extern pfmlib_pmu_t intel_icx_unc_irp4_support;
 extern pfmlib_pmu_t intel_icx_unc_irp5_support;
+extern pfmlib_pmu_t intel_icx_unc_pcu_support;
 extern pfmlib_pmu_t intel_spr_support;
 extern pfmlib_pmu_t intel_emr_support;
 extern pfmlib_pmu_t intel_rapl_support;

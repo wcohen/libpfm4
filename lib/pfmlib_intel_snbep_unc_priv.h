@@ -53,6 +53,9 @@
 #define SNBEP_UNC_ATTR_RMEM	       18 /* not near memory cacheable skx */
 #define SNBEP_UNC_ATTR_DNID	       19 /* destination node id */
 #define SNBEP_UNC_ATTR_RCSNID	       20 /* RCS node id */
+#define SNBEP_UNC_ATTR_T6	       21 /* threshold (cmask) 6-bit */
+#define SNBEP_UNC_ATTR_OCC_I           22 /* occupancy invert */
+#define SNBEP_UNC_ATTR_OCC_E           23 /* occupancy edge */
 
 #define _SNBEP_UNC_ATTR_I	(1 << SNBEP_UNC_ATTR_I)
 #define _SNBEP_UNC_ATTR_E	(1 << SNBEP_UNC_ATTR_E)
@@ -75,6 +78,9 @@
 #define _SNBEP_UNC_ATTR_RMEM	(1 << SNBEP_UNC_ATTR_RMEM)
 #define _SNBEP_UNC_ATTR_DNID    (1 << SNBEP_UNC_ATTR_DNID)
 #define _SNBEP_UNC_ATTR_RCSNID  (1 << SNBEP_UNC_ATTR_RCSNID)
+#define _SNBEP_UNC_ATTR_T6	(1 << SNBEP_UNC_ATTR_T6)
+#define _SNBEP_UNC_ATTR_OCC_I	(1 << SNBEP_UNC_ATTR_OCC_I)
+#define _SNBEP_UNC_ATTR_OCC_E	(1 << SNBEP_UNC_ATTR_OCC_E)
 
 #define SNBEP_UNC_IRP_ATTRS \
 	(_SNBEP_UNC_ATTR_E|_SNBEP_UNC_ATTR_T8)
@@ -133,6 +139,12 @@
 
 #define SKX_UNC_PCU_ATTRS \
 	(_SNBEP_UNC_ATTR_I|_SNBEP_UNC_ATTR_E|_SNBEP_UNC_ATTR_T8)
+
+#define ICX_UNC_PCU_ATTRS \
+	(_SNBEP_UNC_ATTR_I|_SNBEP_UNC_ATTR_E|_SNBEP_UNC_ATTR_T6)
+
+#define ICX_UNC_PCU_OCC_ATTRS \
+	(_SNBEP_UNC_ATTR_I|_SNBEP_UNC_ATTR_E|_SNBEP_UNC_ATTR_T6|_SNBEP_UNC_ATTR_OCC_I|_SNBEP_UNC_ATTR_OCC_E)
 
 #define SNBEP_UNC_PCU_BAND_ATTRS \
 	(SNBEP_UNC_PCU_ATTRS | _SNBEP_UNC_ATTR_FF)
@@ -339,6 +351,21 @@ typedef union {
 		unsigned long unc_umask2:8;	/* extended unit mask */
 		unsigned long unc_res3:24;	/* reserved */
 	} icx_m2m; /* covers icx m2m */
+	struct {
+		unsigned long unc_event:8;	/* event code */
+		unsigned long unc_umask:8;	/* unit mask */
+		unsigned long unc_res1:1;	/* reserved */
+		unsigned long unc_rst:1;	/* reset */
+		unsigned long unc_edge:1;	/* edge detec */
+		unsigned long unc_tid_en:1;	/* tid enable */
+		unsigned long unc_res2:2;	/* reserved */
+		unsigned long unc_en:1;		/* enable */
+		unsigned long unc_inv:1;	/* invert counter mask */
+		unsigned long unc_thres:6;	/* counter mask */
+		unsigned long unc_occ_inv:1;	/* occupancy event invert */
+		unsigned long unc_occ_edge:1;	/* occupancy event edge */
+		unsigned long unc_res3:24;	/* reserved */
+	} icx_pcu; /* covers icx pcu */
 	struct {
 		unsigned long unc_event:8;	/* event code */
 		unsigned long unc_umask:8;	/* unit mask */

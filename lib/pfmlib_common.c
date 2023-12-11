@@ -184,6 +184,7 @@ static pfmlib_pmu_t *pfmlib_pmus[]=
 	&intel_icx_unc_irp3_support,
 	&intel_icx_unc_irp4_support,
 	&intel_icx_unc_irp5_support,
+	&intel_icx_unc_pcu_support,
 	&intel_spr_support,
 	&intel_emr_support,
 	&intel_rapl_support,
