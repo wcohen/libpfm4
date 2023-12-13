@@ -8705,6 +8705,48 @@ static const test_event_t x86_test_events[]={
 	  .codes[0] = 0x8000c080,
 	  .fstr = "icx_unc_pcu::UNC_P_POWER_STATE_OCCUPANCY:CORES_C6:e=1:i=0:t=0:occ_i=0:occ_e=1",
 	},
+	{
+	  .name = "icx_unc_upi0::UNC_UPI_CLOCKTICKS",
+	  .ret  = PFM_SUCCESS,
+	  .count = 1,
+	  .codes[0] = 0x1,
+	  .fstr = "icx_unc_upi0::UNC_UPI_CLOCKTICKS:e=0:i=0:t=0"
+	},
+	{ SRC_LINE,
+	  .name = "icx_unc_upi1::UNC_UPI_CLOCKTICKS",
+	  .ret  = PFM_SUCCESS,
+	  .count = 1,
+	  .codes[0] = 0x1,
+	  .fstr = "icx_unc_upi1::UNC_UPI_CLOCKTICKS:e=0:i=0:t=0"
+	},
+	{ SRC_LINE,
+	  .name = "icx_unc_upi2::UNC_UPI_CLOCKTICKS",
+	  .ret  = PFM_SUCCESS,
+	  .count = 1,
+	  .codes[0] = 0x1,
+	  .fstr = "icx_unc_upi2::UNC_UPI_CLOCKTICKS:e=0:i=0:t=0"
+	},
+	{ SRC_LINE,
+	  .name = "icx_unc_upi3::UNC_UPI_CLOCKTICKS",
+	  .ret  = PFM_SUCCESS,
+	  .count = 1,
+	  .codes[0] = 0x1,
+	  .fstr = "icx_unc_upi3::UNC_UPI_CLOCKTICKS:e=0:i=0:t=0"
+	},
+	{ SRC_LINE,
+	  .name = "icx_unc_upi0::UNC_UPI_RxL_FLITS:ALL_DATA",
+	  .ret  = PFM_SUCCESS,
+	  .count = 1,
+	  .codes[0] = 0xf03,
+	  .fstr = "icx_unc_upi0::UNC_UPI_RxL_FLITS:ALL_DATA:e=0:i=0:t=0",
+	},
+	{ SRC_LINE,
+	  .name = "icx_unc_upi0::UNC_UPI_TxL_FLITS:ALL_DATA",
+	  .ret  = PFM_SUCCESS,
+	  .count = 1,
+	  .codes[0] = 0xf02,
+	  .fstr = "icx_unc_upi0::UNC_UPI_TxL_FLITS:ALL_DATA:e=0:i=0:t=0",
+	},
 };
 
 #define NUM_TEST_EVENTS (int)(sizeof(x86_test_events)/sizeof(test_event_t))
