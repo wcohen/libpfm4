@@ -380,6 +380,7 @@ extern pfmlib_pmu_t intel_icx_unc_m3upi0_support;
 extern pfmlib_pmu_t intel_icx_unc_m3upi1_support;
 extern pfmlib_pmu_t intel_icx_unc_m3upi2_support;
 extern pfmlib_pmu_t intel_icx_unc_m3upi3_support;
+extern pfmlib_pmu_t intel_icx_unc_ubox_support;
 extern pfmlib_pmu_t intel_spr_support;
 extern pfmlib_pmu_t intel_emr_support;
 extern pfmlib_pmu_t intel_rapl_support;

@@ -8775,6 +8775,13 @@ static const test_event_t x86_test_events[]={
 	  .codes[0] = 0x1,
 	  .fstr = "icx_unc_m3upi3::UNC_M3UPI_CLOCKTICKS:e=0:i=0:t=0"
 	},
+	{ SRC_LINE,
+	  .name = "icx_unc_ubox::UNC_U_CLOCKTICKS",
+	  .ret  = PFM_SUCCESS,
+	  .count = 1,
+	  .codes[0] = 0x0,
+	  .fstr = "icx_unc_ubox::UNC_U_CLOCKTICKS:e=0:i=0:t=0"
+	},
 };
 
 #define NUM_TEST_EVENTS (int)(sizeof(x86_test_events)/sizeof(test_event_t))
