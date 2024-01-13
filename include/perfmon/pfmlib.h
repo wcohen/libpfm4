@@ -730,6 +730,20 @@ typedef enum {
 
 	PFM_PMU_INTEL_ADL_GLC,		/* Intel AlderLake Goldencove (P-Core) */
 	PFM_PMU_INTEL_ADL_GRT,		/* Intel AlderLake Gracemont (E-Core) */
+
+	PFM_PMU_INTEL_SPR_UNC_IMC0,	/* Intel SapphireRapids IMC channel 0 uncore */
+	PFM_PMU_INTEL_SPR_UNC_IMC1,	/* Intel SapphireRapids IMC channel 1 uncore */
+	PFM_PMU_INTEL_SPR_UNC_IMC2,	/* Intel SapphireRapids IMC channel 2 uncore */
+	PFM_PMU_INTEL_SPR_UNC_IMC3,	/* Intel SapphireRapids IMC channel 3 uncore */
+	PFM_PMU_INTEL_SPR_UNC_IMC4,	/* Intel SapphireRapids IMC channel 4 uncore */
+	PFM_PMU_INTEL_SPR_UNC_IMC5,	/* Intel SapphireRapids IMC channel 5 uncore */
+	PFM_PMU_INTEL_SPR_UNC_IMC6,	/* Intel SapphireRapids IMC channel 6 uncore */
+	PFM_PMU_INTEL_SPR_UNC_IMC7,	/* Intel SapphireRapids IMC channel 7 uncore */
+	PFM_PMU_INTEL_SPR_UNC_IMC8,	/* Intel SapphireRapids IMC channel 8 uncore */
+	PFM_PMU_INTEL_SPR_UNC_IMC9,	/* Intel SapphireRapids IMC channel 9 uncore */
+	PFM_PMU_INTEL_SPR_UNC_IMC10,	/* Intel SapphireRapids IMC channel 10 uncore */
+	PFM_PMU_INTEL_SPR_UNC_IMC11,	/* Intel SapphireRapids IMC channel 11 uncore */
+
 	/* MUST ADD NEW PMU MODELS HERE */
 
 	PFM_PMU_MAX			/* end marker */
