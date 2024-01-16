@@ -744,6 +744,11 @@ typedef enum {
 	PFM_PMU_INTEL_SPR_UNC_IMC10,	/* Intel SapphireRapids IMC channel 10 uncore */
 	PFM_PMU_INTEL_SPR_UNC_IMC11,	/* Intel SapphireRapids IMC channel 11 uncore */
 
+	PFM_PMU_INTEL_SPR_UNC_UPI0,	/* Intel SapphireRapids UPI0 uncore */
+	PFM_PMU_INTEL_SPR_UNC_UPI1,	/* Intel SapphireRapids UPI1 uncore */
+	PFM_PMU_INTEL_SPR_UNC_UPI2,	/* Intel SapphireRapids UPI2 uncore */
+	PFM_PMU_INTEL_SPR_UNC_UPI3,	/* Intel SapphireRapids UPI3 uncore */
+
 	/* MUST ADD NEW PMU MODELS HERE */
 
 	PFM_PMU_MAX			/* end marker */
