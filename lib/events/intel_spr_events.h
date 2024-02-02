@@ -2177,7 +2177,7 @@ static const intel_x86_entry_t intel_spr_pe[]={
     .modmsk = INTEL_V5_ATTRS,
     .cntmsk = 0xfull,
     .ngrp   = 1,
-    .flags  = 0,
+    .flags  = INTEL_X86_PEBS,
     .numasks= LIBPFM_ARRAY_SIZE(intel_spr_mem_load_l3_miss_retired),
     .umasks = intel_spr_mem_load_l3_miss_retired,
   },
