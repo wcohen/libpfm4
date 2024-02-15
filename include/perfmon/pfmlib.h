@@ -727,6 +727,8 @@ typedef enum {
 	PFM_PMU_INTEL_ICX_UNC_M2PCIE0,	/* Intel Icelake-X M2PCIE0 uncore */
 	PFM_PMU_INTEL_ICX_UNC_M2PCIE1,	/* Intel Icelake-X M2PCIE1 uncore */
 	PFM_PMU_INTEL_ICX_UNC_M2PCIE2,	/* Intel Icelake-X M2PCIE2 uncore */
+
+	PFM_PMU_INTEL_ADL_GLC,		/* Intel AlderLake Goldencove (P-Core) */
 	/* MUST ADD NEW PMU MODELS HERE */
 
 	PFM_PMU_MAX			/* end marker */
