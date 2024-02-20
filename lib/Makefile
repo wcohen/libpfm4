@@ -296,6 +296,7 @@ INC_X86= pfmlib_intel_x86_priv.h	\
 	events/intel_icl_events.h	\
 	events/intel_spr_events.h	\
 	events/intel_adl_glc_events.h	\
+	events/intel_adl_grt_events.h	\
 	pfmlib_intel_snbep_unc_priv.h	\
 	events/intel_snbep_unc_cbo_events.h \
 	events/intel_snbep_unc_ha_events.h \
