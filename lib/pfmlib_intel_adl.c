@@ -30,6 +30,9 @@
 static const int adl_glc_models[] = {
 	0x97, /* Alderlake */
 	0x9a, /* Alderlake L */
+	0xb7, /* Raptorlake */
+	0xba, /* Raptorlake P */
+	0xbf, /* Raptorlake S */
 	0
 };
 
