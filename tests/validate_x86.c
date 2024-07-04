@@ -10004,6 +10004,22 @@ static const test_event_t x86_test_events[]={
 	  .codes[0] = 0x53100dull,
 	  .fstr = "amd64_fam1ah_zen5::PACKED_INT_OPS_RETIRED:INT128_NONE:INT256_ADD:k=1:u=1:e=0:i=0:c=0:h=0:g=0",
 	},
+	{ SRC_LINE,
+	  .name = "amd64_fam1ah_zen5_l3::UNC_L3_REQUESTS",
+	  .count = 1,
+	  .codes[0] = 0x53ff04ull,
+	  .fstr = "amd64_fam1ah_zen5_l3::UNC_L3_REQUESTS:ALL",
+	},
+	{ SRC_LINE,
+	  .name = "amd64_fam1ah_zen5_l3::UNC_L3_REQUESTS:L3_MISS",
+	  .count = 1,
+	  .codes[0] = 0x530104ull,
+	  .fstr = "amd64_fam1ah_zen5_l3::UNC_L3_REQUESTS:L3_MISS",
+	},
+	{ SRC_LINE,
+	  .name = "amd64_fam1ah_zen5_l3::UNC_L3_REQUESTS:u",
+	  .ret  = PFM_ERR_ATTR,
+	},
 };
 
 #define NUM_TEST_EVENTS (int)(sizeof(x86_test_events)/sizeof(test_event_t))

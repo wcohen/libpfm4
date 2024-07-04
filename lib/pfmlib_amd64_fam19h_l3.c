@@ -43,7 +43,7 @@ display_l3(void *this, pfmlib_event_desc_t *e, void *val)
 			reg->l3.umask);
 }
 
-const pfmlib_attr_desc_t l3_mods[]={
+const pfmlib_attr_desc_t fam19h_l3_mods[]={
 	PFM_ATTR_NULL
 };
 
@@ -58,7 +58,7 @@ pfmlib_pmu_t amd64_fam19h_zen3_l3_support = {
 	.num_cntrs		= 4,
 	.max_encoding		= 1,
 	.pe			= amd64_fam19h_zen3_l3_pe,
-	.atdesc			= l3_mods,
+	.atdesc			= fam19h_l3_mods,
 	.flags			= PFMLIB_PMU_FL_RAW_UMASK,
 	.cpu_family		= PFM_PMU_AMD64_FAM19H_ZEN3,
 	.pmu_detect		= pfm_amd64_family_detect,
