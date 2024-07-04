@@ -812,6 +812,7 @@ typedef enum {
 
 	PFM_PMU_INTEL_GNR,		/* Intel GraniteRapids core PMU */
 
+	PFM_PMU_AMD64_FAM1AH_ZEN5,      /* AMD64 Fam1Ah Zen5 */
 	/* MUST ADD NEW PMU MODELS HERE */
 
 	PFM_PMU_MAX			/* end marker */
