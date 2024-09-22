@@ -35,6 +35,7 @@
 
 #include "events/arm_cortex_a57_events.h"    /* A57 event tables */
 #include "events/arm_cortex_a53_events.h"    /* A53 event tables */
+#include "events/arm_cortex_a55_events.h"    /* A53 event tables */
 #include "events/arm_xgene_events.h"         /* Applied Micro X-Gene tables */
 #include "events/arm_cavium_tx2_events.h"    	/* Marvell ThunderX2 tables */
 #include "events/arm_fujitsu_a64fx_events.h"	/* Fujitsu A64FX PMU tables */
@@ -121,6 +122,16 @@ pfm_arm_detect_cortex_a53(void *this)
 	}
 	return PFM_ERR_NOTSUPP;
 }
+
+static int
+pfm_arm_detect_cortex_a55(void *this)
+{
+	/* Cortex A55 */
+	arm_cpuid_t attr = { .impl = 0x41, .arch = 8, .part = 0xd05 };
+
+	return pfm_arm_detect(&attr);
+}
+
 
 static int
 pfm_arm_detect_xgene(void *this)
@@ -253,6 +264,33 @@ pfmlib_pmu_t arm_cortex_a53_support={
 	.pe			= arm_cortex_a53_pe,
 
 	.pmu_detect		= pfm_arm_detect_cortex_a53,
+	.max_encoding		= 1,
+	.num_cntrs		= 6,
+
+	.get_event_encoding[PFM_OS_NONE] = pfm_arm_get_encoding,
+	 PFMLIB_ENCODE_PERF(pfm_arm_get_perf_encoding),
+	.get_event_first	= pfm_arm_get_event_first,
+	.get_event_next		= pfm_arm_get_event_next,
+	.event_is_valid		= pfm_arm_event_is_valid,
+	.validate_table		= pfm_arm_validate_table,
+	.get_event_info		= pfm_arm_get_event_info,
+	.get_event_attr_info	= pfm_arm_get_event_attr_info,
+	 PFMLIB_VALID_PERF_PATTRS(pfm_arm_perf_validate_pattrs),
+	.get_event_nattrs	= pfm_arm_get_event_nattrs,
+};
+
+/* ARM Cortex A55 support */
+pfmlib_pmu_t arm_cortex_a55_support={
+	.desc			= "ARM Cortex A55",
+	.name			= "arm_ac55",
+	.perf_name		= "armv8_cortex_a55",
+	.pmu			= PFM_PMU_ARM_CORTEX_A55,
+	.pme_count		= LIBPFM_ARRAY_SIZE(arm_cortex_a55_pe),
+	.type			= PFM_PMU_TYPE_CORE,
+	.supported_plm          = ARMV8_PLM,
+	.pe			= arm_cortex_a55_pe,
+
+	.pmu_detect		= pfm_arm_detect_cortex_a55,
 	.max_encoding		= 1,
 	.num_cntrs		= 6,
 
