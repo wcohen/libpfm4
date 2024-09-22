@@ -126,12 +126,18 @@ pfm_arm_detect_cortex_a53(void *this)
 static int
 pfm_arm_detect_cortex_a55(void *this)
 {
-	/* Cortex A55 */
-	arm_cpuid_t attr = { .impl = 0x41, .arch = 8, .part = 0xd05 };
+	int ret;
 
-	return pfm_arm_detect(&attr);
+	ret = pfm_arm_detect(this);
+	if (ret != PFM_SUCCESS)
+		return PFM_ERR_NOTSUPP;
+
+	if ((pfm_arm_cfg.implementer == 0x41) && /* ARM */
+		(pfm_arm_cfg.part == 0xd05)) { /* Cortex A55 */
+			return PFM_SUCCESS;
+	}
+	return PFM_ERR_NOTSUPP;
 }
-
 
 static int
 pfm_arm_detect_xgene(void *this)
