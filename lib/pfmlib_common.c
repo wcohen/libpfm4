@@ -1737,7 +1737,7 @@ pfmlib_build_event_pattrs(pfmlib_event_desc_t  *e)
 	if (pmu->get_event_nattrs)
 		pmu_nattrs = pmu->get_event_nattrs(pmu, e->event);
 	if (os && os->get_os_nattrs)
-		os_nattrs += os->get_os_nattrs(os, e);
+		os_nattrs = os->get_os_nattrs(os, e);
 
 	npattrs = pmu_nattrs + os_nattrs;
 
