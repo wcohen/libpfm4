@@ -961,7 +961,8 @@ typedef struct {
 		unsigned int    is_precise:1;	  /* Intel X86: supports PEBS */
 		unsigned int	is_speculative:2; /* count correct and wrong path occurrences */
 		unsigned int	support_hw_smpl:1;/* can be recorded by hw buffer (Intel X86=EXTPEBS) */
-		unsigned int	reserved_bits:27;
+		unsigned int	support_no_mods:1;/* attribute does not support modifiers (umask only) */
+		unsigned int	reserved_bits:26;
 	} SWIG_NAME(flags);
 	union {
 		uint64_t	dfl_val64;	/* default 64-bit value */
