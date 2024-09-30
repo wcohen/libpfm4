@@ -138,6 +138,10 @@ information is not available. A value of \fBPFM_EVENT_INFO_SPEC_TRUE\fR indicate
 that the attribute counts during speculative execution. A value of \fBPFM_EVENT_INFO_SPEC_FALSE\fR
 indicates that the attribute does not count during speculative execution.
 .TP
+.B support_hw_smpl
+This boolean field indicates that the attribute (in this case a umask) supports hardware sampling.
+That means the hardware can sample this event+umasks without involving the kernel at each sample.
+.TP
 .B support_no_mods
 This boolean field indicates that the attribute (in this case a umask) does not support any hardware
 or software modifiers, such as privilege level filters, sampling, precise sampling, and such. This
